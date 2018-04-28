@@ -4,18 +4,18 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const {Blogs} = require('.models');
+const {Blogs} = require('./models');
 
 Blogs.create('TIME - what time?!?', 'Time is a never enough resource', 'JA Mitchell', '4.27.2018');
 Blogs.create('The Show Must Go On', 'No matter what happens', 'JA Mitchell', '4.27.2018');
 
 
 
-router.get('/blog-posts', (req, res) => {
+router.get('/', (req, res) => {
 	res.json(Blogs.get());
 });
 
-router.post('/blog-posts', jsonParser, (req, res) => {
+router.post('/', jsonParser, (req, res) => {
 	const requiredFields = ['title', 'content', 'author'];
 	for (let i=0; i<requiredFields.length; i++) {
 		const field = requiredFields[i];
@@ -29,8 +29,8 @@ router.post('/blog-posts', jsonParser, (req, res) => {
 	res.status(201).json(entry);
 });
 
-router.put('/blog-posts/:id', jsonParser, (req, res) => {
-	const requiredFields = [ 'id', 'title', 'content', 'author', 'date'];
+router.put('/:id', jsonParser, (req, res) => {
+	const requiredFields = [ 'id', 'title', 'content', 'author', 'publishDate'];
 	for (let i=0; i<requiredFields.length; i++) {
 		const field = requiredFields[i];
 		if (!(field in req.body)) {
@@ -51,12 +51,12 @@ router.put('/blog-posts/:id', jsonParser, (req, res) => {
 		title: req.body.title,
 		content: req.body.content,
 		author: req.body.author,
-		date: req.body.date
+		publishDate: req.body.publishDate
 	});
 	res.status(204).end();
 });
 
-app.delete('/blogs-posts/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
 	Blogs.delete(req.params.id);
 	console.log(`Deleted blog entry \`$req.params.id}\``);
 	res.status(204).end();

@@ -15,7 +15,7 @@ function StorageException(message) {
    this.name = "StorageException";
 }
 
-const BlogPosts = {
+const Blogs = {
   create: function(title, content, author, publishDate) {
     const post = {
       id: uuid.v4(),
@@ -50,6 +50,7 @@ const BlogPosts = {
     const {id} = updatedPost;
     const postIndex = this.posts.findIndex(
       post => post.id === updatedPost.id);
+    console.dir(updatedPost);
     if (postIndex === -1) {
       throw new StorageException(
         `Can't update item \`${id}\` because doesn't exist.`)
@@ -60,11 +61,11 @@ const BlogPosts = {
   }
 };
 
-function createBlogPostsModel() {
-  const storage = Object.create(BlogPosts);
+function createBlogsModel() {
+  const storage = Object.create(Blogs);
   storage.posts = [];
   return storage;
 }
 
 
-module.exports = {BlogPosts: createBlogPostsModel()};
+module.exports = {Blogs: createBlogsModel()};
